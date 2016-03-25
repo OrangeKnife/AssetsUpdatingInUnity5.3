@@ -13,11 +13,6 @@ namespace LOM
             BackButton.onClick.AddListener(OnBackClicked);
         }
 
-        // Update is called once per frame
-        void Update() {
-
-        }
-
         public void DisplayRewards()
         {
            rewardsDataList.LoadData(GameManager.Instance, 0); 

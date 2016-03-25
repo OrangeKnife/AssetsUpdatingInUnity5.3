@@ -11,7 +11,7 @@ namespace LOM
             List<MetaDataForWidget> meteDataList = new List<MetaDataForWidget>();
             switch (dataCategory)
             {
-                case 0: //end game rewards
+                case 0: //end game rewards test data provider only
                     
                     
                     for (int testI = 0; testI < 20; ++testI)
@@ -31,9 +31,7 @@ namespace LOM
             return meteDataList;
         }
         #endregion
-
-        #region Singleton
-        // Manager is a singleton throughout the game lifecycle.
+        
         private static GameManager _instance = null;
         public static GameManager Instance
         {
@@ -48,9 +46,7 @@ namespace LOM
         }
 
         private GameManager()
-        {
-        }
-        # endregion
+        {}
        
  
         public void RequestUpdateGame()

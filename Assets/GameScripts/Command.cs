@@ -5,16 +5,6 @@ namespace LOM
 {
     public class Command
     {
-        # region private members
-        # endregion
-
-        # region Handlers and events
-        #endregion
-
-        #region interfaces
-        #endregion
-
-        #region Singleton
         private static Command _instance = null;
 
         public delegate void CommandCall(params object[] paramList);
@@ -64,11 +54,8 @@ namespace LOM
         }
 
         private Command()
-        {
+        {}
 
-
-        }
-        #endregion
         public void Exe(string cmd, object[] cmdparams)
         {
             cmd = cmd.ToLower();

@@ -39,8 +39,10 @@ namespace LOM
                 return eventManager;
             }
         }
+        private EventManager()
+        {}
 
-        void Init()
+        private void Init()
         {
             if (eventDictionary == null)
             {

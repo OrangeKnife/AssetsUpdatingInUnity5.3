@@ -9,15 +9,6 @@ namespace LOM
         private string registeredEventName;
         private UnityAction<EventObj> registeredCallBack;
 
-        // Use this for initialization
-        void Start() {
-
-        }
-
-        // Update is called once per frame
-        void Update() {
-
-        }
 
         public void Initialize(string text, float delayToKill = 3)
         {
@@ -32,7 +23,7 @@ namespace LOM
             registeredCallBack = OverlayCallback;
         }
 
-        void RemoveEventAndCallBack()
+        private void RemoveEventAndCallBack()
         {
             if(registeredEventName != "" && registeredCallBack != null)
                 EventManager.RemoveEvent(registeredEventName, registeredCallBack);
@@ -47,7 +38,7 @@ namespace LOM
                 StartCoroutine(KillOverlay(2,eo.paramString));
         }
 
-        IEnumerator KillOverlay(float howLong, string err)
+        private IEnumerator KillOverlay(float howLong, string err)
         {
             displayText.text = err;
             yield return new WaitForSeconds(howLong);

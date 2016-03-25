@@ -12,6 +12,7 @@ namespace LOM
     }
     class ErrorCode
     {
+        //TODO move this kind of code-string map to a config file
         public static string getErrorString(int ece)
         {
             switch((ErrorCodeEnum)ece)

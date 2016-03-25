@@ -25,21 +25,15 @@ namespace LOM
                     {
                         Debug.LogError("There needs to be one active GlobalBehaviors script on a GameObject in your scene.");
                     }
-                    else
-                    {
-                        _GlobalBehaviors.Init();
-                    }
                 }
 
                 return _GlobalBehaviors;
             }
         }
-
+        private GlobalBehaviors()
+        {}
         private Queue<MessageInfo> messageBoxInfoQueue;
         private GameObject currentMessageBoxGO;
-
-        void Init()
-        { }
 
         void Start()
         {

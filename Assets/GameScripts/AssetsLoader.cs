@@ -19,6 +19,7 @@ namespace LOM
 
     public class AssetsLoader : MonoBehaviour
     {
+        //attach to a game object and place it in the first scene
         #region StaticFunctions
         static public AssetBundleManifest DownloadedAssetBundleManifestObject { get; private set; }
         static public bool bIsDownloading { get; private set; }
@@ -69,14 +70,32 @@ namespace LOM
 
         public AssetsTableScriptableObject DefaultAssetsTableObj;
         private AssetsTableScriptableObject DownloadedAssetsTableObj = null;
-        #region One-time Creation
-        public static AssetsLoader Instance { get; private set; }
+
+        private static AssetsLoader assetsloader;
+        public static AssetsLoader Instance
+        {
+            get
+            {
+                if (!assetsloader)
+                {
+                    assetsloader = FindObjectOfType(typeof(AssetsLoader)) as AssetsLoader;
+
+                    if (!assetsloader)
+                    {
+                        Debug.LogError("There needs to be one active AssetsLoader script on a GameObject in your scene.");
+                    }
+                }
+
+                return assetsloader;
+            }
+        }
         void Awake()
         {
-            Instance = this;
             DontDestroyOnLoad(gameObject);
         }
-        #endregion
+        private AssetsLoader()
+        {}
+
         public void SetDownloadedAssetsTableObj(AssetsTableScriptableObject objIn)
         {
             DownloadedAssetsTableObj = objIn;
@@ -101,9 +120,6 @@ namespace LOM
                 if (!string.IsNullOrEmpty(entry.Value.AssetBundleName) || !string.IsNullOrEmpty(entry.Value.AssetName))
                     Debug.LogError("Default AssetsTable Shall not have Asset Bundle / Asset names --> Key: " + entry.Key);
 #endif
-        }
-        void OnDestroy()
-        {
         }
         public void LoadLevel(ref AssetsTableScriptableObject.AssetEntry assetEntry)
         {
@@ -198,7 +214,5 @@ namespace LOM
                 }
             }
         }
-
-
     }
 }

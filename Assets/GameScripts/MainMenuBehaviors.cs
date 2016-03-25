@@ -7,11 +7,6 @@ namespace LOM
     // Some of the functionality of the Main Menu.
     public class MainMenuBehaviors : MonoBehaviour
     {
-        void Start()
-        {
-            
-        }
-
         void OnDestroy()
         {
             CleanUpEventCallbacks();
@@ -38,22 +33,7 @@ namespace LOM
         {
             GameManager.Instance.LogInToFacebook();
         }
-
-      
-
-        public void RefreshButtonBehavior()
-        {
-        }
-
-        public void SettingsButtonBehavior()
-        {
-            SceneManager.LoadScene("SettingsMenu");
-        }
-
-        public void FBLoginCallback(EventObj eo)
-        {
-            
-        }
+        
 
 
     }

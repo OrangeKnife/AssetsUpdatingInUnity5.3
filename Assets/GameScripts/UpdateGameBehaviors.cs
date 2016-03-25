@@ -16,12 +16,6 @@ namespace LOM
             EventManager.RegisterEvent("OfflineGame", OfflineGameHandler);
             GameManager.Instance.RequestUpdateGame(); 
         }
-        void Awake()
-        {
-        }
-        // Update is called once per frame
-        void Update()
-        {}
 
         void OnDestroy()
         {

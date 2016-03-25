@@ -24,11 +24,6 @@ namespace LOM
         public bool populateXfirst = true;//otherwise populateY
 
         private int currentIdx;
-        void Start()
-        {
-            //test
-            //LoadData(GameManager.Instance, 0);
-        }
 
         public void LoadData(IDataListDataProvider dp, int dataCategory)
         {

@@ -11,24 +11,31 @@ namespace LOM
 {
     public class NetworkManager : MonoBehaviour
     {
-        # region Constants and configuration values
-        
-
         private const string ClientVerPropertyName = "clientVer";
 
-        # endregion
-        
-        # region One-time Creation
-        public static NetworkManager Instance { get; private set; }
+        private static NetworkManager networkmanager;
+        public static NetworkManager Instance
+        {
+            get
+            {
+                if (!networkmanager)
+                {
+                    networkmanager = FindObjectOfType(typeof(NetworkManager)) as NetworkManager;
+
+                    if (!networkmanager)
+                    {
+                        Debug.LogError("There needs to be one active NetworkManager script on a GameObject in your scene.");
+                    }
+                }
+
+                return networkmanager;
+            }
+        }
         void Awake()
         {
-            Instance = this;
-            // This NetworkManager object will persist until the game is closed
-            DontDestroyOnLoad(gameObject);
-      
+            DontDestroyOnLoad(gameObject);     
             SceneManager.LoadScene("UpdateGame");
         }
-        # endregion
 
         # region Callbacks
        
@@ -62,7 +69,7 @@ namespace LOM
 
         }
 
-        IEnumerator CheckVersionEnumerator(WWW www, UpdateGameCallback callback)
+        private IEnumerator CheckVersionEnumerator(WWW www, UpdateGameCallback callback)
         {
             //Wait for request to complete
             yield return www;

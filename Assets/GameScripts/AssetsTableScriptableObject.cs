@@ -8,6 +8,7 @@ namespace LOM
     [CreateAssetMenu(fileName = "AssetsTable", menuName = "AssetsTable", order = 1)]
     public class AssetsTableScriptableObject : ScriptableObject
     {
+        //assets table
         [System.Serializable]
         public class AssetEntry
         {

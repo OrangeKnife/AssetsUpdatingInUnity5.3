@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-namespace LOM
+﻿namespace LOM
 {
     public enum ErrorCodeEnum:int
     {
@@ -13,7 +12,7 @@ namespace LOM
     class ErrorCode
     {
         //TODO move this kind of code-string map to a config file
-        public static string getErrorString(int ece)
+        public static string GetErrorString(int ece)
         {
             switch((ErrorCodeEnum)ece)
             {

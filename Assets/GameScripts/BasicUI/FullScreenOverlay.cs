@@ -1,10 +1,12 @@
-﻿using UnityEngine;
-using System.Collections;
-using UnityEngine.UI;
-using UnityEngine.Events;
-namespace LOM
+﻿namespace LOM
 {
-    public class FullScreenOverlay : MonoBehaviour {
+    using UnityEngine;
+    using System.Collections;
+    using UnityEngine.UI;
+    using UnityEngine.Events;
+
+    public class FullScreenOverlay : MonoBehaviour
+    {
         public Text displayText;
         private string registeredEventName;
         private UnityAction<EventObj> registeredCallBack;
@@ -25,7 +27,7 @@ namespace LOM
 
         private void RemoveEventAndCallBack()
         {
-            if(registeredEventName != "" && registeredCallBack != null)
+            if (registeredEventName != "" && registeredCallBack != null)
                 EventManager.RemoveEvent(registeredEventName, registeredCallBack);
         }
 
@@ -35,7 +37,7 @@ namespace LOM
             if (eo.paramInt == Constants.INT_SUCCEED)
                 Destroy(gameObject);
             else
-                StartCoroutine(KillOverlay(2,eo.paramString));
+                StartCoroutine(KillOverlay(2, eo.paramString));
         }
 
         private IEnumerator KillOverlay(float howLong, string err)

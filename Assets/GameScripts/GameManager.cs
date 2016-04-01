@@ -1,8 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEngine;
-namespace LOM
+﻿namespace LOM
 {
+    using System;
+    using System.Collections.Generic;
+
+
     public class GameManager : IDataListDataProvider
     {
         #region interfaces
@@ -12,16 +13,16 @@ namespace LOM
             switch (dataCategory)
             {
                 case 0: //end game rewards test data provider only
-                    
-                    
+
+
                     for (int testI = 0; testI < 20; ++testI)
                     {
                         MetaDataForWidget testitem = new MetaDataForWidget();
-                        testitem.dataStr1 = "wow"+ testI.ToString();
+                        testitem.dataStr1 = "wow" + testI.ToString();
                         testitem.dataInt1 = testI;
                         meteDataList.Add(testitem);
                     }
-                    
+
 
 
                     break;
@@ -31,8 +32,8 @@ namespace LOM
             return meteDataList;
         }
         #endregion
-        
         private static GameManager _instance = null;
+
         public static GameManager Instance
         {
             get
@@ -46,9 +47,9 @@ namespace LOM
         }
 
         private GameManager()
-        {}
-       
- 
+        {
+        }
+
         public void RequestUpdateGame()
         {
             //TODO read option to get client ver
@@ -64,7 +65,7 @@ namespace LOM
             }
             else
             {
-                GlobalBehaviors.instance.AddAMessageBox("Opps~", "You can't reach the server right now :/ do you want to retry?", MessageBoxType.YESNO,
+                GlobalBehaviors.Instance.AddAMessageBox("Opps~", "You can't reach the server right now :/ do you want to retry?", MessageBoxType.YESNO,
                        "Retry", "Offline", null, () =>
                        {
                            RequestUpdateGame();
@@ -77,12 +78,11 @@ namespace LOM
             }
         }
 
-
         public void GameUpdated(EventObj eo)
         {
-            //if (eo.paramInt == 3/*serverVer*/)
             LoadMainMenu();
         }
+
         private void LoadMainMenu()
         {
             EventManager.RemoveEvent("AssetBundlesDownloaded", GameUpdated);
@@ -94,7 +94,6 @@ namespace LOM
 
         public void LogInToFacebook()
         {
-
         }
 
         public void PostFBLogin(int successCode)

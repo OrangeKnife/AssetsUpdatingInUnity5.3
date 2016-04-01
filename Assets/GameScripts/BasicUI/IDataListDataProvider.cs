@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-
-namespace LOM
+﻿namespace LOM
 {
+    using System.Collections.Generic;
+
     public interface IDataListDataProvider
     {
         List<MetaDataForWidget> GetData(int dataCategory);

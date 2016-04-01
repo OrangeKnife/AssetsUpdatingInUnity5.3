@@ -49,6 +49,7 @@
         public int paramInt2;
         public float paramFloat2;
         public string paramString2;
+
         public EventObj_2(string name, string pString, string pString2, int pInt, int pInt2, float pFloat, float pFloat2)
             :base(name, pString, pInt, pFloat)
         {

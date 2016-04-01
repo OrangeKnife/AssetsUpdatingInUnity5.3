@@ -1,19 +1,20 @@
-﻿using UnityEngine;
-using System.Collections.Generic;
-using UnityEngine.Events;
-
-namespace LOM
+﻿namespace LOM
 {
+    using UnityEngine;
+    using System.Collections.Generic;
+    using UnityEngine.Events;
+
+
     public class GlobalBehaviors : MonoBehaviour
     {
-        
-
-
         public GameObject FullScreenOverlayTemplate, MessageBoxTemplate;
-
+        private Queue<MessageInfo> messageBoxInfoQueue;
+        private GameObject currentMessageBoxGO;
         private static GlobalBehaviors _GlobalBehaviors;
+        private GlobalBehaviors()
+        { }
 
-        public static GlobalBehaviors instance
+        public static GlobalBehaviors Instance
         {
             get
             {
@@ -29,21 +30,16 @@ namespace LOM
 
                 return _GlobalBehaviors;
             }
-        }
-        private GlobalBehaviors()
-        {}
-        private Queue<MessageInfo> messageBoxInfoQueue;
-        private GameObject currentMessageBoxGO;
+        } 
 
         void Start()
         {
             messageBoxInfoQueue = new Queue<MessageInfo>();
         }
 
-        // Update is called once per frame
         void Update()
         {
-            if(messageBoxInfoQueue != null && messageBoxInfoQueue.Count > 0 && currentMessageBoxGO == null)
+            if (messageBoxInfoQueue != null && messageBoxInfoQueue.Count > 0 && currentMessageBoxGO == null)
             {
                 currentMessageBoxGO = Instantiate(MessageBoxTemplate);
                 currentMessageBoxGO.GetComponent<MessageBox>().Initialize(messageBoxInfoQueue.Dequeue());
@@ -71,10 +67,10 @@ namespace LOM
             mi.type = tp;
             mi.TitleString = title; mi.ContentString = content;
             mi.YesString = YesStr; mi.NoString = NoStr; mi.CancelString = Cancel;
-            mi.YesCallback = YesCallback; mi.NoCallback = NoCallback; mi.CancelCallback= CancelCallback;
+            mi.YesCallback = YesCallback; mi.NoCallback = NoCallback; mi.CancelCallback = CancelCallback;
             if (messageBoxInfoQueue != null)
                 messageBoxInfoQueue.Enqueue(mi);
-            
+
         }
     }
 }

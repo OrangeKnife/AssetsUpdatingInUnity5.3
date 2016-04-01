@@ -1,21 +1,15 @@
-﻿using UnityEngine;
-using UnityEngine.Events;
-using System.Collections;
-using System.Collections.Generic;
-
-namespace LOM
+﻿namespace LOM
 {
+    using UnityEngine;
+    using UnityEngine.Events;
+    using System.Collections.Generic;
 
-    using UnityActionList = List<UnityAction<EventObj>>;
+
+    using UnityActionList = System.Collections.Generic.List<UnityEngine.Events.UnityAction<EventObj>>;
     public class EventManager : MonoBehaviour
     {
         private Dictionary<string, UnityActionList> eventDictionary;
-
-        void Awake()
-        {
-            DontDestroyOnLoad(gameObject);
-        }
-
+    
         private static EventManager eventManager;
 
         public static EventManager instance
@@ -39,8 +33,14 @@ namespace LOM
                 return eventManager;
             }
         }
+
         private EventManager()
-        {}
+        { }
+
+        void Awake()
+        {
+            DontDestroyOnLoad(gameObject);
+        }
 
         private void Init()
         {

@@ -1,10 +1,11 @@
-﻿using UnityEngine;
-using System.Collections;
-using AssetBundles;
-using UnityEngine.SceneManagement;
-
-namespace LOM
+﻿namespace LOM
 {
+    using UnityEngine;
+    using System.Collections;
+    using AssetBundles;
+    using UnityEngine.SceneManagement;
+
+
     [System.Serializable]
     public class AssetBundleUpdateInfo
     {
@@ -20,11 +21,36 @@ namespace LOM
     public class AssetsLoader : MonoBehaviour
     {
         //attach to a game object and place it in the first scene
+
+        public AssetsTableScriptableObject DefaultAssetsTableObj;
+        private AssetsTableScriptableObject DownloadedAssetsTableObj = null;
+
+        private static AssetsLoader assetsloader;
+        public static AssetsLoader Instance
+        {
+            get
+            {
+                if (!assetsloader)
+                {
+                    assetsloader = FindObjectOfType(typeof(AssetsLoader)) as AssetsLoader;
+
+                    if (!assetsloader)
+                    {
+                        Debug.LogError("There needs to be one active AssetsLoader script on a GameObject in your scene.");
+                    }
+                }
+
+                return assetsloader;
+            }
+        }
+        private AssetsLoader()
+        { }
+
         #region StaticFunctions
         static public AssetBundleManifest DownloadedAssetBundleManifestObject { get; private set; }
         static public bool bIsDownloading { get; private set; }
         static private int count;
-        public static IEnumerator downloadManifest(AssetBundleUpdateInfo updateInfo, bool bAutoDownloadAllAssetBundles = false)
+        public static IEnumerator DownloadManifest(AssetBundleUpdateInfo updateInfo, bool bAutoDownloadAllAssetBundles = false)
         {
 #if UNITY_EDITOR
             // If we're in Editor simulation mode, we don't need the manifest assetBundle.
@@ -60,7 +86,7 @@ namespace LOM
             }
             //ready to use the asset bundle manager
             AssetBundleManager.SetSourceAssetBundleURL(updateInfo.url);
-            AssetBundleManager.InitializeWithManifest(DownloadedAssetBundleManifestObject,new string[2]{ "hd","sd"});
+            AssetBundleManager.InitializeWithManifest(DownloadedAssetBundleManifestObject, new string[2] { "hd", "sd" });
             bIsDownloading = false;
 
         }
@@ -68,47 +94,9 @@ namespace LOM
         #endregion
 
 
-        public AssetsTableScriptableObject DefaultAssetsTableObj;
-        private AssetsTableScriptableObject DownloadedAssetsTableObj = null;
-
-        private static AssetsLoader assetsloader;
-        public static AssetsLoader Instance
-        {
-            get
-            {
-                if (!assetsloader)
-                {
-                    assetsloader = FindObjectOfType(typeof(AssetsLoader)) as AssetsLoader;
-
-                    if (!assetsloader)
-                    {
-                        Debug.LogError("There needs to be one active AssetsLoader script on a GameObject in your scene.");
-                    }
-                }
-
-                return assetsloader;
-            }
-        }
         void Awake()
         {
             DontDestroyOnLoad(gameObject);
-        }
-        private AssetsLoader()
-        {}
-
-        public void SetDownloadedAssetsTableObj(AssetsTableScriptableObject objIn)
-        {
-            DownloadedAssetsTableObj = objIn;
-            DownloadedAssetsTableObj.Init();
-        }
-        public AssetsTableScriptableObject.AssetEntry GetAssetEntry(string assetId)
-        {
-            if (DownloadedAssetsTableObj != null && DownloadedAssetsTableObj.AssetsTable.ContainsKey(assetId))
-                return DownloadedAssetsTableObj.AssetsTable[assetId];
-            else if (DefaultAssetsTableObj.AssetsTable.ContainsKey(assetId))
-                return DefaultAssetsTableObj.AssetsTable[assetId];
-
-            return null;
         }
 
         void Start()
@@ -116,11 +104,29 @@ namespace LOM
             DefaultAssetsTableObj.Init();
 
 #if UNITY_EDITOR
-            foreach (var entry in DefaultAssetsTableObj.AssetsTable)
+            foreach (var entry in DefaultAssetsTableObj.assetsTable)
                 if (!string.IsNullOrEmpty(entry.Value.AssetBundleName) || !string.IsNullOrEmpty(entry.Value.AssetName))
-                    Debug.LogError("Default AssetsTable Shall not have Asset Bundle / Asset names --> Key: " + entry.Key);
+                    Debug.LogError("Default assetsTable Shall not have Asset Bundle / Asset names --> Key: " + entry.Key);
 #endif
         }
+
+
+        public void SetDownloadedAssetsTableObj(AssetsTableScriptableObject objIn)
+        {
+            DownloadedAssetsTableObj = objIn;
+            DownloadedAssetsTableObj.Init();
+        }
+
+        public AssetsTableScriptableObject.AssetEntry GetAssetEntry(string assetId)
+        {
+            if (DownloadedAssetsTableObj != null && DownloadedAssetsTableObj.assetsTable.ContainsKey(assetId))
+                return DownloadedAssetsTableObj.assetsTable[assetId];
+            else if (DefaultAssetsTableObj.assetsTable.ContainsKey(assetId))
+                return DefaultAssetsTableObj.assetsTable[assetId];
+
+            return null;
+        }
+
         public void LoadLevel(ref AssetsTableScriptableObject.AssetEntry assetEntry)
         {
             if (string.IsNullOrEmpty(assetEntry.AssetBundleName) || string.IsNullOrEmpty(assetEntry.AssetName))
@@ -174,7 +180,6 @@ namespace LOM
             else
                 callback(null);
         }
-
 
         public IEnumerator DownLoadAllAssetBundlesAsync(bool bUnloadDownloadedAssetBundle = true)
         {

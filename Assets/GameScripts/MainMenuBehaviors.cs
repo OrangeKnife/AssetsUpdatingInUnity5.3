@@ -1,9 +1,7 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
-
-namespace LOM
+﻿namespace LOM
 {
+    using UnityEngine;
+
     // Some of the functionality of the Main Menu.
     public class MainMenuBehaviors : MonoBehaviour
     {
@@ -14,10 +12,10 @@ namespace LOM
 
         public void NewGameButtonBehavior()
         {
-            GlobalBehaviors.instance.CreateAFullScreenOverlay("Creating a game for you now...", "NewMatchCreated");
+            GlobalBehaviors.Instance.CreateAFullScreenOverlay("Creating a game for you now...", "NewMatchCreated");
 
             EventManager.RegisterEvent("NewMatchCreated", LoadToMatchScene, true);
-            
+
         }
 
         private void LoadToMatchScene(EventObj ob)
@@ -33,8 +31,5 @@ namespace LOM
         {
             GameManager.Instance.LogInToFacebook();
         }
-        
-
-
     }
 }

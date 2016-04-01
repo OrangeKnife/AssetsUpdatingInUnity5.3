@@ -1,19 +1,20 @@
-﻿using LitJson;
-using UnityEngine;
-using System.Collections;
-using System.Text;
-using System.Collections.Generic;
-using System.Threading;
-using System;
-using UnityEngine.SceneManagement;
-
-namespace LOM
+﻿namespace LOM
 {
+    using LitJson;
+    using UnityEngine;
+    using System.Collections;
+    using System.Text;
+    using System.Collections.Generic;
+    using UnityEngine.SceneManagement;
+
+
     public class NetworkManager : MonoBehaviour
     {
-        private const string ClientVerPropertyName = "clientVer";
-
+        private const string clientVerPropertyName = "clientVer";
         private static NetworkManager networkmanager;
+        #region Callbacks
+        public delegate void UpdateGameCallback(string error, AssetBundleUpdateInfo updateInfo);
+        #endregion
         public static NetworkManager Instance
         {
             get
@@ -31,30 +32,25 @@ namespace LOM
                 return networkmanager;
             }
         }
+
         void Awake()
         {
-            DontDestroyOnLoad(gameObject);     
+            DontDestroyOnLoad(gameObject);
             SceneManager.LoadScene("UpdateGame");
         }
-
-        # region Callbacks
-       
-        public delegate void UpdateGameCallback(string error, AssetBundleUpdateInfo updateInfo);
-
-        #endregion
-
         #region update game
         public void RequestUpdateGameAsync(int verNum, UpdateGameCallback callback)
         {
             var payloadStringBuilder = new StringBuilder();
             var payloadJsonWriter = new JsonWriter(payloadStringBuilder);
             payloadJsonWriter.WriteObjectStart();
-            payloadJsonWriter.WritePropertyName(ClientVerPropertyName);
+            payloadJsonWriter.WritePropertyName(clientVerPropertyName);
             payloadJsonWriter.Write(verNum);
             payloadJsonWriter.WriteObjectEnd();
 #if UNITY_EDITOR
-            if (AssetBundles.AssetBundleManager.SimulateAssetBundleInEditor){
-                callback("DUMMY",null);
+            if (AssetBundles.AssetBundleManager.SimulateAssetBundleInEditor)
+            {
+                callback("DUMMY", null);
             }
             else
 #endif
@@ -76,21 +72,20 @@ namespace LOM
             if (www.error == null)
             {
                 string serviceData = www.text;
-                
+
                 var jreader = new JsonReader(serviceData);
                 var json = JsonMapper.ToObject(jreader);
                 if (!(bool)json["error"])
                     callback(null, JsonUtility.FromJson<AssetBundleUpdateInfo>(json["updateInfo"].ToJson()));
                 else
-                    callback(ErrorCode.getErrorString((int)json["errorCode"]), null);
+                    callback(ErrorCode.GetErrorString((int)json["errorCode"]), null);
 
             }
             else
             {
-                callback(ErrorCode.getErrorString((int)ErrorCodeEnum.UpdateGame_Client_CantReachServer), null);
-                
-                Debug.Log("www error:"+www.error);
-                //Debug.Log("www text:"+www.text);
+                callback(ErrorCode.GetErrorString((int)ErrorCodeEnum.UpdateGame_Client_CantReachServer), null);
+
+                Debug.Log("www error:" + www.error);
             }
         }
         #endregion

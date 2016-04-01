@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEngine.Events;
-using UnityEngine.UI;
-using UnityEngine;
-namespace LOM
+﻿namespace LOM
 {
+    using UnityEngine.Events;
+    using UnityEngine.UI;
+    using UnityEngine;
+
     public enum MessageBoxType
     {
         YES,
@@ -17,7 +16,7 @@ namespace LOM
     {
         public MessageBoxType type;
         public string YesString, NoString, CancelString, TitleString, ContentString;
-        public UnityAction YesCallback,NoCallback,CancelCallback;
+        public UnityAction YesCallback, NoCallback, CancelCallback;
     }
 
     public class MessageBox : MonoBehaviour
@@ -39,12 +38,12 @@ namespace LOM
             NoText.text = mi.NoString;
             CancelText.text = mi.CancelString;
 
-            
-            switch(mi.type)
+
+            switch (mi.type)
             {
                 case MessageBoxType.YES:
                     YesButton.gameObject.SetActive(true);
-                    if(mi.YesCallback!=null)
+                    if (mi.YesCallback != null)
                         YesButton.onClick.AddListener(mi.YesCallback);
                     YesButton.onClick.AddListener(DestroyBox);
                     break;

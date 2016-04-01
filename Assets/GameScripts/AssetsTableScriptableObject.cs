@@ -1,11 +1,9 @@
-﻿using UnityEngine;
-using System.Collections.Generic;
-
-
-namespace LOM
+﻿namespace LOM
 {
+    using UnityEngine;
+    using System.Collections.Generic;
 
-    [CreateAssetMenu(fileName = "AssetsTable", menuName = "AssetsTable", order = 1)]
+    [CreateAssetMenu(fileName = "assetsTable", menuName = "assetsTable", order = 1)]
     public class AssetsTableScriptableObject : ScriptableObject
     {
         //assets table
@@ -25,18 +23,18 @@ namespace LOM
         }
 
         [SerializeField]
-        private List<KVP_Asset> AssetsTableKVP = null;
+        private List<KVP_Asset> assetsTableKVP = null;
 
-        public Dictionary<string, AssetEntry> AssetsTable;
+        public Dictionary<string, AssetEntry> assetsTable;
 
         public void Init()
         {
-            if (AssetsTableKVP != null && AssetsTable == null)
+            if (assetsTableKVP != null && assetsTable == null)
             {
-                AssetsTable = new Dictionary<string, AssetEntry>(AssetsTableKVP.Count);
-                foreach (var entry in AssetsTableKVP)
+                assetsTable = new Dictionary<string, AssetEntry>(assetsTableKVP.Count);
+                foreach (var entry in assetsTableKVP)
                 {
-                    AssetsTable[entry.Key] = entry.Value;
+                    assetsTable[entry.Key] = entry.Value;
                 }
             }
         }

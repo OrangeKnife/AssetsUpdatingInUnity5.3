@@ -1,29 +1,26 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
-using AssetBundles;
-using System;
-
-namespace LOM
+﻿namespace LOM
 {
+    using UnityEngine;
+    using System.Collections;
+    using AssetBundles;
+
     public class UpdateGameBehaviors : MonoBehaviour
     {
         private AssetBundleUpdateInfo savedupdateInfo = null;
-        // Use this for initialization
+
         void Start()
         {
             EventManager.RegisterEvent("UpdateGame", UpdateGameHandler);
             EventManager.RegisterEvent("OfflineGame", OfflineGameHandler);
-            GameManager.Instance.RequestUpdateGame(); 
+            GameManager.Instance.RequestUpdateGame();
         }
 
         void OnDestroy()
         {
             EventManager.RemoveEvent("UpdateGame", UpdateGameHandler);
             EventManager.RemoveEvent("OfflineGame", OfflineGameHandler);
-            
-        }
 
+        }
 
         private void UpdateGameHandler(EventObj eo)
         {
@@ -46,7 +43,7 @@ namespace LOM
 
         private IEnumerator DownLoadManifestAndInitAssetBundleManager(AssetBundleUpdateInfo updateInfo)
         {
-            yield return StartCoroutine(AssetsLoader.downloadManifest(updateInfo));
+            yield return StartCoroutine(AssetsLoader.DownloadManifest(updateInfo));
 
 
             if (AssetBundleManager.AssetBundleManifestObject != null)
@@ -55,18 +52,18 @@ namespace LOM
             }
             else
             {
-                GlobalBehaviors.instance.AddAMessageBox("Error", "You can't load game content index correctly :( Please try restart the game!", MessageBoxType.YES,
+                GlobalBehaviors.Instance.AddAMessageBox("Error", "You can't load game content index correctly :( Please try restart the game!", MessageBoxType.YES,
                     "OK", null, null, null, null, null); //no way ...
                 yield break;
             }
-            
+
 
             //load assets table first
             AssetsTableScriptableObject assetsTableObj;
 
             AssetsTableScriptableObject.AssetEntry assetsTableEntry = new AssetsTableScriptableObject.AssetEntry();//fake entry :D
             assetsTableEntry.AssetBundleName = "assetstable";
-            assetsTableEntry.AssetName = "AssetsTable";
+            assetsTableEntry.AssetName = "assetsTable";
             yield return StartCoroutine(AssetsLoader.Instance.InstantiateObjectAsync(assetsTableEntry, (newAssetstable) =>
             {
                 if (newAssetstable != null)
@@ -80,10 +77,6 @@ namespace LOM
 
 
             EventManager.TriggerEvent(new EventObj("AssetBundlesDownloaded"));
-
-
-
-
 
         }
     }

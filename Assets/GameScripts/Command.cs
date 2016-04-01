@@ -1,13 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEngine;
-namespace LOM
+﻿namespace LOM
 {
+    using System.Collections.Generic;
+    using UnityEngine;
+
     public class Command
     {
         private static Command _instance = null;
-
         public delegate void CommandCall(params object[] paramList);
+        private Dictionary<string, SFuncCall> funcTable = new Dictionary<string, SFuncCall>();
+
+        public static Command Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = new Command();
+                }
+                return _instance;
+            }
+        }
+
+        private Command()
+        { }
+
         private struct SFuncCall
         {
             public int paramCount;
@@ -38,38 +54,22 @@ namespace LOM
                 return base.GetHashCode();
             }
         }
-       
-        private Dictionary<string, SFuncCall> funcTable = new Dictionary<string, SFuncCall>();
-
-        public static Command Instance
-        {
-            get
-            {
-                if (_instance == null)
-                {
-                    _instance = new Command();
-                }
-                return _instance;
-            }
-        }
-
-        private Command()
-        {}
-
+        
         public void Exe(string cmd, object[] cmdparams)
         {
             cmd = cmd.ToLower();
             if (funcTable.ContainsKey(cmd))
             {
-                if(cmdparams.Length == 1 && (string)cmdparams[0] == "" && funcTable[cmd].paramCount == 0 //means no param
+                if (cmdparams.Length == 1 && (string)cmdparams[0] == "" && funcTable[cmd].paramCount == 0 //means no param
                     || cmdparams.Length == funcTable[cmd].paramCount)
                     funcTable[cmd].call.Invoke(cmdparams);
                 else
-                    Debug.Log(cmd+" param count error, requires " + funcTable[cmd].paramCount + " params");
+                    Debug.Log(cmd + " param count error, requires " + funcTable[cmd].paramCount + " params");
             }
             else
                 Debug.Log("no such command: " + cmd);
         }
+
         public void RegisterCommand(string funcName, int paramCount, CommandCall aFuncCall)
         {
             funcName = funcName.ToLower();

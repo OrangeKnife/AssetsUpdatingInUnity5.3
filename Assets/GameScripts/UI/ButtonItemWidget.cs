@@ -1,8 +1,8 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
-using System.Collections;
-namespace LOM
+﻿namespace LOM
 {
+    using UnityEngine;
+    using UnityEngine.UI;
+
     public class ButtonItemWidget : MonoBehaviour, IDataListWidget
     {
         public Text ItemNameText, ItemCountText;

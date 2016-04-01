@@ -1,21 +1,23 @@
-﻿using UnityEngine;
-using System.Collections;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
-namespace LOM
+﻿namespace LOM
 {
-    public class UIRewards : MonoBehaviour {
+    using UnityEngine;
+    using UnityEngine.UI;
+    using UnityEngine.SceneManagement;
+
+    public class UIRewards : MonoBehaviour
+    {
 
         public DataListPopulator rewardsDataList;
-        public Button BackButton;
+        public Button backButton;
 
-        void Start() {
-            BackButton.onClick.AddListener(OnBackClicked);
+        void Start()
+        {
+            backButton.onClick.AddListener(OnBackClicked);
         }
 
         public void DisplayRewards()
         {
-           rewardsDataList.LoadData(GameManager.Instance, 0); 
+            rewardsDataList.LoadData(GameManager.Instance, 0);
         }
 
         public void OnBackClicked()

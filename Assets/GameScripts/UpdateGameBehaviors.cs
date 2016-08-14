@@ -45,18 +45,22 @@
         {
             yield return StartCoroutine(AssetsLoader.DownloadManifest(updateInfo));
 
-
-            if (AssetBundleManager.AssetBundleManifestObject != null)
+#if UNITY_EDITOR
+            // If we're in Editor simulation mode, we don't need the manifest assetBundle.
+            if (!AssetBundleManager.SimulateAssetBundleInEditor)
+#endif
             {
-                yield return StartCoroutine(AssetsLoader.Instance.DownLoadAllAssetBundlesAsync());
+                if (AssetBundleManager.AssetBundleManifestObject != null)
+                {
+                    yield return StartCoroutine(AssetsLoader.Instance.DownLoadAllAssetBundlesAsync());
+                }
+                else
+                {
+                    GlobalBehaviors.Instance.AddAMessageBox("Error", "You can't load game content index correctly :( Please try restart the game!", MessageBoxType.YES,
+                        "OK", null, null, null, null, null); //no way ...
+                    yield break;
+                }
             }
-            else
-            {
-                GlobalBehaviors.Instance.AddAMessageBox("Error", "You can't load game content index correctly :( Please try restart the game!", MessageBoxType.YES,
-                    "OK", null, null, null, null, null); //no way ...
-                yield break;
-            }
-
 
             //load assets table first
             AssetsTableScriptableObject assetsTableObj;
